@@ -1,0 +1,22 @@
+Kailh Choc V2 (PG1353) の 3D モデル  ---  ref/choc-v2-red.step
+
+出典   : https://github.com/koktoh/keyswitch_model
+         choc/v2/step/red.step （2026-09-11 取得）
+作者   : koktoh
+ライセンス: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+           (CC BY-NC-SA 4.0)
+           https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+★NC（非営利）と SA（継承）が付く。**このモデルはアセンブリにそのまま
+  置いているので、条件は out/ のアセンブリ STEP・STL にも及ぶ**
+  （2026-09-11 にそう決めた）。配布するときは出典と CC BY-NC-SA 4.0 を
+  明示すること。
+
+  商用利用する場合は:
+    1. このファイル（と .step）を消す
+    2. make_assembly.py の build() で `choc_v2_switch` を
+       `choc_v2_envelope` に差し替える（外形図 CPG135301D03 だけで組んだ
+       3 段の角柱になる。ライセンスの制約は無い）
+
+モデルの座標系: z=0 が PCB 上の座面、z+ が上。bbox 15.00 x 15.00 x 11.90
+（z -3.30 端子先端 .. 8.60 ステム上端）。

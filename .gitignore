@@ -1,0 +1,11 @@
+# XIAO nRF52840 の参考モデルは再配布の条件が不明なので、モデルそのものと、それを含む出力を公開しない
+# （入手先は ref/xiao-nrf52840.LICENSE.txt。build.py はモデルが無ければ外形の箱で代える）
+ref/xiao-nrf52840.step
+out/stl/asm/xiao-*.stl
+out/step/assembly.step
+out/*.3mf
+web/assembly-local.glb
+web/share/
+
+__pycache__/
+.DS_Store
