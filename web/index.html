@@ -279,24 +279,30 @@ const loadEl = document.getElementById("loading");
 const loadBar = document.getElementById("loadBar");
 const loadText = document.getElementById("loadText");
 
+// content-length は圧縮後のサイズのことがある（GitHub Pages は gzip で送る）ので、受け取った分を
+// つなぐだけにし、進み具合は目安として 100% で頭打ちにする
 async function fetchWithProgress(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(url + ": " + res.status);
+  if (!res.body) return new Uint8Array(await res.arrayBuffer());
   const total = Number(res.headers.get("content-length")) || 0;
-  if (!res.body || !total) return new Uint8Array(await res.arrayBuffer());
   const reader = res.body.getReader();
-  const out = new Uint8Array(total);
+  const chunks = [];
   let got = 0;
   for (;;) {
     const { done, value } = await reader.read();
     if (done) break;
-    if (got + value.length > out.length) return new Uint8Array(await new Blob([out.subarray(0, got), value]).arrayBuffer());
-    out.set(value, got); got += value.length;
-    const pct = (100 * got / total).toFixed(0);
-    loadBar.style.width = pct + "%";
-    loadText.textContent = "Loading model… " + pct + "%";
+    chunks.push(value); got += value.length;
+    if (total) {
+      const pct = Math.min(100, Math.round(100 * got / total));
+      loadBar.style.width = pct + "%";
+      loadText.textContent = "Loading model… " + pct + "%";
+    }
   }
-  return out.subarray(0, got);
+  const out = new Uint8Array(got);
+  let at = 0;
+  for (const c of chunks) { out.set(c, at); at += c.length; }
+  return out;
 }
 
 // 手元に XIAO 入りの assembly-local.glb（git に入れない）があればそれを、無ければ公開用の
